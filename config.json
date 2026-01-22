@@ -1,0 +1,8 @@
+{
+  "name": "RustDesk Linker",
+  "shortName": "rustdesk",
+  "version": "1.0.0",
+  "author": "MonsterIT",
+  "description": "Launch RustDesk using the Device Description field.",
+  "hasAdminPanel": false
+}
