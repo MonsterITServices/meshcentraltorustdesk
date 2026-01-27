@@ -5,5 +5,13 @@
   "author": "MonsterIT",
   "description": "Adds a RustDesk launch button to the device header.",
   "hasAdminPanel": false,
-  "meshCentralCompat": ">0.4.3"
+  "homepage": "https://github.com/MonsterITServices/meshcentraltorustdesk",
+  "changelogUrl": "https://raw.githubusercontent.com/MonsterITServices/meshcentraltorustdesk/main/changelog.md",
+  "configUrl": "https://raw.githubusercontent.com/MonsterITServices/meshcentraltorustdesk/main/config.json",
+  "downloadUrl": "https://github.com/MonsterITServices/meshcentraltorustdesk/archive/main.zip",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MonsterITServices/meshcentraltorustdesk.git"
+  },
+  "meshCentralCompat": ">=0.4.4-s"
 }
