@@ -1,7 +1,7 @@
 {
   "name": "RustDesk Integration",
   "shortName": "rustdesk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "MonsterIT",
   "description": "Adds a RustDesk launch button to the device header.",
   "hasAdminPanel": false,
