@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Known Issues]
 - None. Please feel free to submit an issue via [GitHub](https://github.com/ryanblenis/MeshCentral-Sample) if you find anything.
 
+## [1.0.1] 2026-01-27
+### added
+- support for upbrame
 ## [0.0.2] - 2019-11-23
 ### Fixed
 - Input value was not correct
