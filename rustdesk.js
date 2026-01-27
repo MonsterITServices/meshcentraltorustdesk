@@ -4,46 +4,46 @@ module.exports.rustdesk = function (parent) {
   var obj = {};
   obj.parent = parent;
 
-  // 1. Expose the hook (Required)
+  // 1. Force Export
   obj.exports = ['onDeviceRefreshEnd'];
 
-  // 2. Browser-Side Hook
+  // 2. Immediate Console Log (To prove the file loaded)
+  console.log("RUSTDESK: Plugin Script Loaded in Browser!");
+
   obj.onDeviceRefreshEnd = function (nodeid, panel, refresh, event) {
     
-    // DEBUG: Verify the hook fired in the browser console (F12)
-    console.log("RustDesk: Hook fired for node", nodeid);
+    // Debug Log
+    console.log("RUSTDESK: View refreshed for node", nodeid);
 
-    // Stop if we aren't on a device page
+    // Only run if we are looking at a specific device
     if (typeof currentNode === 'undefined' || !currentNode) return;
 
-    // 3. START POLLING (Keep looking for the header for 5 seconds)
+    // Polling Loop (Try for 2 seconds)
     var attempts = 0;
     var poller = setInterval(function() {
         attempts++;
-        if (attempts > 10) { clearInterval(poller); return; } // Give up after 5s
+        if (attempts > 10) { clearInterval(poller); return; }
 
-        // A. Find the Header
         var header = document.getElementById('p10title');
-        if (!header) {
-            console.log("RustDesk: Header not found yet...");
-            return; // Try again next tick
-        }
+        if (!header) return;
 
-        // B. Check for valid ID
-        var targetID = currentNode.rdid || currentNode.description;
-        if (!targetID || !/^\d+$/.test(targetID)) {
-            clearInterval(poller); // Stop if no valid ID
-            return; 
-        }
-
-        // C. Avoid Duplicates
+        // Check if button already exists
         if (document.getElementById('btn_rustdesk_launch')) {
-            clearInterval(poller); // Already drawn
+            clearInterval(poller);
             return;
         }
 
-        // D. Create Button
-        console.log("RustDesk: Injecting Button for ID " + targetID);
+        // Get ID
+        var targetID = currentNode.rdid || currentNode.description;
+        if (!targetID || !/^\d+$/.test(targetID)) {
+             // Optional: Console log why we failed
+             // console.log("RUSTDESK: No valid ID found (Description/RDID is not numeric)");
+             clearInterval(poller);
+             return; 
+        }
+
+        // Create Button
+        console.log("RUSTDESK: Injecting Button!");
         var btn = document.createElement('span');
         btn.id = "btn_rustdesk_launch";
         btn.innerText = "RustDesk"; 
@@ -56,9 +56,9 @@ module.exports.rustdesk = function (parent) {
         };
 
         header.appendChild(btn);
-        clearInterval(poller); // Done!
+        clearInterval(poller);
 
-    }, 500); // Check every 500ms
+    }, 200);
   };
 
   return obj;
