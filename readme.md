@@ -10,4 +10,9 @@ Restart your MeshCentral server after making this change.
  `https://raw.githubusercontent.com/MonsterITServices/meshcentraltorustdesk/master/config.json`
 
 ## Features
-Upon disconnecting from a remote desktop session, the user will be prompted to enter a note.
+Enabled Gear icon within device to input custom location for rustdesk installer (or what you named it).
+Use reg file and amend it to your file location for it to run rustdesk fully.
+
+
+## Next developement
+Find out keys from devices and input automatically.
