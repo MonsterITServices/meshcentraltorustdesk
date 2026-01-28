@@ -5,11 +5,12 @@ Windows Registry Editor Version 5.00
 "URL Protocol"=""
 
 [HKEY_CLASSES_ROOT\rustdesk\DefaultIcon]
-@="\"C:\\Program Files\\monstermainremtoe\\monstermainremtoe.exe\""
+@="\"C:\\Program Files\\rustdesk\\rustdesk.exe\""
 
 [HKEY_CLASSES_ROOT\rustdesk\shell]
 
 [HKEY_CLASSES_ROOT\rustdesk\shell\open]
 
 [HKEY_CLASSES_ROOT\rustdesk\shell\open\command]
-@="\"C:\\Program Files\\monstermainremtoe\\monstermainremtoe.exe\" \"%1\""
+
+@="\"C:\\Program Files\\rustdesk\\rustdesk.exe\" \"%1\""
