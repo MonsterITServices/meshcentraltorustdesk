@@ -1,81 +1,92 @@
 "use strict";
 
+/*
+ MeshCentral RustDesk Integration Plugin
+ Version: 1.3.0
+ Author: You
+*/
+
 module.exports.rustdesk = function (parent) {
-  var obj = {};
-  obj.parent = parent;
-  obj.exports = ['onDeviceRefreshEnd'];
+    var obj = {};
+    obj.parent = parent;
+    obj.exports = ['onDeviceRefreshEnd'];
 
-  // STARTUP LOG (Should appear immediately on refresh)
-  console.log("RUSTDESK 1.2.0: Script initialized.");
+    console.log("RUSTDESK 1.3.0: Plugin loaded");
 
-  obj.onDeviceRefreshEnd = function (nodeid, panel, refresh, event) {
-    
-    // 1. Log the hook trigger
-    console.log("RUSTDESK: Hook fired. Panel:", panel);
+    obj.onDeviceRefreshEnd = function (nodeid, panel, refresh, event) {
 
-    // Only run on the "General" panel (usually panel 10 or similar for devices)
-    // We skip the check to be safe, but logging it helps.
+        // Only inject on General tab (panel 10)
+        if (panel !== 10) return;
 
-    var attempts = 0;
-    var poller = setInterval(function() {
-        attempts++;
-        if (attempts > 20) { 
-            console.log("RUSTDESK: Timed out waiting for header/data.");
-            clearInterval(poller); 
-            return; 
-        }
+        let tries = 0;
+        const maxTries = 20;
 
-        // 2. Check Header
-        var header = document.getElementById('p10title');
-        if (!header) {
-            // Keep silent to avoid spamming logs while waiting
-            return; 
-        }
+        const poller = setInterval(function () {
+            tries++;
+            if (tries > maxTries) {
+                clearInterval(poller);
+                return;
+            }
 
-        // 3. Clean duplicates
-        if (document.getElementById('btn_rustdesk_launch')) {
+            // Avoid duplicate buttons
+            if (document.getElementById('rustdesk_launch_btn')) {
+                clearInterval(poller);
+                return;
+            }
+
+            // Locate the device title header (stable selector)
+            const header = document.querySelector('.devicetitle');
+            if (!header) return;
+
+            // Get node safely from MeshCentral
+            const node = parent.nodes[nodeid];
+            if (!node || !node.tags) return;
+
+            // Extract RustDesk ID from tags: rdid:123456
+            let rustdeskId = null;
+            node.tags.forEach(tag => {
+                if (tag.startsWith('rdid:')) {
+                    rustdeskId = tag.split(':')[1];
+                }
+            });
+
+            // Validate ID
+            if (!rustdeskId || !/^\d+$/.test(rustdeskId)) {
+                clearInterval(poller);
+                return;
+            }
+
+            console.log("RUSTDESK: Found ID", rustdeskId);
+
+            // Create button
+            const btn = document.createElement('span');
+            btn.id = 'rustdesk_launch_btn';
+            btn.textContent = 'RustDesk';
+            btn.title = 'Connect via RustDesk (' + rustdeskId + ')';
+
+            btn.style.cssText = `
+                display: inline-block;
+                margin-left: 10px;
+                padding: 3px 8px;
+                background: #d32f2f;
+                color: #fff;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: bold;
+            `;
+
+            btn.onclick = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = 'rustdesk://' + rustdeskId;
+            };
+
+            header.appendChild(btn);
             clearInterval(poller);
-            return;
-        }
 
-        // 4. DEBUG THE DATA (This is what we need to see!)
-        if (typeof currentNode === 'undefined' || !currentNode) {
-            console.log("RUSTDESK: 'currentNode' is undefined.");
-            return;
-        }
+        }, 250);
+    };
 
-        var rdid = currentNode.rdid;
-        var desc = currentNode.description;
-        
-        console.log("RUSTDESK DEBUG: RDID =", rdid, "| DESC =", desc);
-
-        // 5. Decide
-        var targetID = rdid || desc;
-        
-        // Strict number check
-        if (!targetID || !/^\d+$/.test(targetID)) {
-             console.log("RUSTDESK: Skipping - No valid numeric ID found.");
-             clearInterval(poller);
-             return; 
-        }
-
-        // 6. Inject
-        console.log("RUSTDESK: VALID ID FOUND (" + targetID + "). DRAWING BUTTON.");
-        var btn = document.createElement('span');
-        btn.id = "btn_rustdesk_launch";
-        btn.innerText = "RustDesk"; 
-        btn.style.cssText = "display: inline-block; cursor: pointer; background-color: #d32f2f; color: white; padding: 2px 8px; margin-left: 10px; border-radius: 4px; font-weight: bold; font-size: 12px; vertical-align: middle; position: relative; top: -2px;";
-        btn.title = "Connect to " + targetID;
-        btn.onclick = function(e) {
-            e.stopPropagation();
-            window.open("rustdesk://" + targetID, "_self");
-        };
-
-        header.appendChild(btn);
-        clearInterval(poller);
-
-    }, 250);
-  };
-
-  return obj;
+    return obj;
 };
