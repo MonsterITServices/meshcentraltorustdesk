@@ -16,3 +16,19 @@ Use reg file and amend it to your file location for it to run rustdesk fully.
 
 ## Next developement
 Find out keys from devices and input automatically.
+
+## What you need todo
+✅ Click on Device
+Add the "rdid:123456789" without the "" in tags.
+
+
+Click ⚙ next to the
+
+Enter:
+C:\Program Files\rustdesk\rustdesk.exe (or your custom program location)
+
+Hit Save
+
+Make sure you run the registry file to link rustdesk command to launch it in windows.
+
+Click RustDesk
