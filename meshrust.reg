@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\rustdesk]
+@="URL:RustDesk Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\rustdesk\DefaultIcon]
+@="\"C:\\Program Files\\monstermainremtoe\\monstermainremtoe.exe\""
+
+[HKEY_CLASSES_ROOT\rustdesk\shell]
+
+[HKEY_CLASSES_ROOT\rustdesk\shell\open]
+
+[HKEY_CLASSES_ROOT\rustdesk\shell\open\command]
+@="\"C:\\Program Files\\monstermainremtoe\\monstermainremtoe.exe\" \"%1\""
