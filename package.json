@@ -1,6 +1,6 @@
 {
   "name": "meshcentral-rustdesk",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "RustDesk Plugin for MeshCentral",
   "main": "rustdesk.js",
   "author": "MonsterIT",
